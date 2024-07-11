@@ -1,33 +1,27 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
-import axios from 'axios';
 
 function App() {
   const [img, setImg] = useState(null);
+  const [error, setError] = useState(null);
 
-  const config = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints',
-    headers: { 
-      'APi-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=',
-      "Host": "postman-echo.com",
-      "User-Agent": "PostmanRuntime/7.39.0",
-      "Accept": "*/*",
-      "Content-Type": "application/json",
-      "Connection": "keep-alive",
-      "Accept-Encoding": "gzip, deflate, br",
-    }
-  };
-
-  axios.request(config)
-  .then((response) => {
-    console.log(JSON.stringify(response.data));
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  useEffect(() => {
+    axios.get('https://vercel.com/safwanabdal03s-projects/one-net-react')
+      .then(response => {
+        console.log(response.data);
+        if (response.data.errno === 0) {
+          setImg(response.data.data.datastreams[0].datapoints[0].value);
+        } else {
+          setError('Failed to load data');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        setError(`Error fetching data: ${error.message}`);
+      });
+  }, []);
 
   return (
     <div className="App">
@@ -42,8 +36,8 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {img}
-        </a>  
+          {error ? error : img}
+        </a>
       </header>
     </div>
   );
