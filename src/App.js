@@ -36,7 +36,10 @@ function App() {
         {error ? (
           <p>{error}</p>
         ) : (
-          <pre>{combinedBase64}</pre> // Display the combined base64 string
+          <div>
+            <h3>Base64 Data:</h3>
+            <pre>{combinedBase64}</pre>
+          </div>
         )}
         <a
           className="App-link"
