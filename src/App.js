@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [datastreams, setDatastreams] = useState([]);
+  const [combinedBase64, setCombinedBase64] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -12,7 +12,10 @@ function App() {
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
-          setDatastreams(response.data.data.datastreams);
+          const datastreams = response.data.data.datastreams;
+          const base64Values = datastreams.map(stream => stream.datapoints[0].value);
+          const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
+          setCombinedBase64(combinedBase64);
         } else {
           setError('Failed to load data');
         }
@@ -33,14 +36,7 @@ function App() {
         {error ? (
           <p>{error}</p>
         ) : (
-          datastreams.map((stream, index) => (
-            <div key={index}>
-              <h3>Datastream {index + 1}</h3>
-              {stream.datapoints.map((point, idx) => (
-                <p key={idx}>{point.value}</p>
-              ))}
-            </div>
-          ))
+          <pre>{combinedBase64}</pre> // Display the combined base64 string
         )}
         <a
           className="App-link"
