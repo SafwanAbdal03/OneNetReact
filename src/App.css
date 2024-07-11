@@ -44,5 +44,8 @@
   white-space: -pre-wrap; /* Opera <7 */
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* IE */
+  max-width: 90%; /* Ensures the text container is not too wide */
+  margin: auto; /* Centers the text container */
 }
+
 
