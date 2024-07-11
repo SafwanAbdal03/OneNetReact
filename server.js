@@ -1,4 +1,5 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Disable SSL verification (not recommended for production)
+
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors'); // Use CORS middleware to handle cross-origin requests
@@ -8,9 +9,15 @@ const port = process.env.PORT || 8080;
 
 app.use(cors()); // Enable all CORS requests
 
+// Root route for testing
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
+// Route to fetch data from OneNet
 app.get('/api/data', async (req, res) => {
   try {
-    const response = await axios.get('https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints', {
+    const response = await axios.get('http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints', {
       params: {
         'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI='
       }
@@ -22,6 +29,7 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Proxy server is running at http://localhost:${port}`);
 });
