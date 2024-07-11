@@ -14,7 +14,7 @@ function App() {
           const datastreams = response.data.data.datastreams;
           const base64Values = datastreams.map(stream => stream.datapoints[0].value);
           const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
-          setCombinedBase64(`data:image/jpeg;base64,${combinedBase64}`); // Assuming the image is JPEG format
+          setCombinedBase64(combinedBase64);
         } else {
           setError('Failed to load data');
         }
@@ -36,7 +36,7 @@ function App() {
         ) : (
           <div>
             <h3>Base64 Data:</h3>
-            <img src={combinedBase64} alt="Fetched from API" />
+            <img src={`data:image/jpeg;base64,${combinedBase64}`} alt="Fetched from API" />
           </div>
         )}
         <a
@@ -53,5 +53,3 @@ function App() {
 }
 
 export default App;
-
-
