@@ -17,9 +17,9 @@ app.get('/', (req, res) => {
 // Route to fetch data from OneNet
 app.get('/api/data', async (req, res) => {
   try {
-    const response = await axios.get('http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints', {
-      params: {
-        'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI='
+    const response = await axios.get('https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints', {
+      headers: {
+        'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' // Pass the API key in the headers
       }
     });
     res.json(response.data);
