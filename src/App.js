@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [img, setImg] = useState(null);
+  const [datastreams, setDatastreams] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function App() {
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
-          setImg(response.data.data.datastreams[0].datapoints[0].value);
+          setDatastreams(response.data.data.datastreams);
         } else {
           setError('Failed to load data');
         }
@@ -30,13 +30,25 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          datastreams.map((stream, index) => (
+            <div key={index}>
+              <h3>Datastream {index + 1}</h3>
+              {stream.datapoints.map((point, idx) => (
+                <p key={idx}>{point.value}</p>
+              ))}
+            </div>
+          ))
+        )}
         <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {error ? error : img}
+          Learn React
         </a>
       </header>
     </div>
