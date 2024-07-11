@@ -8,7 +8,7 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://vercel.com/safwanabdal03s-projects/one-net-react')
+    axios.get('http://localhost:8080/api/data') // Fetching from your local Express server
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
