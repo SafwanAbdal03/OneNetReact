@@ -8,7 +8,7 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://localhost:8080/api/data') // Fetching from your local Express server
+    axios.get('http://localhost:8080/api/data') // Fetching from your local Express server
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
