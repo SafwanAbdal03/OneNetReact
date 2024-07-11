@@ -10,7 +10,7 @@ app.use((req, res, next) => {
 
 app.get('/api/data', async (req, res) => {
     try {
-        const response = await axios.get('http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints?API-Key=7Nvk6zxDmTRJ2tjKz8yXStogHRI=', {
+        const response = await axios.get('https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints?API-Key=7Nvk6zxDmTRJ2tjKz8yXStogHRI=', {
         });
         res.json(response.data);
     } catch (error) {
