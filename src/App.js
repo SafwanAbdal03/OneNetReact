@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -15,7 +14,7 @@ function App() {
           const datastreams = response.data.data.datastreams;
           const base64Values = datastreams.map(stream => stream.datapoints[0].value);
           const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
-          setCombinedBase64(combinedBase64);
+          setCombinedBase64(`data:image/jpeg;base64,${combinedBase64}`); // Assuming the image is JPEG format
         } else {
           setError('Failed to load data');
         }
@@ -29,7 +28,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -38,7 +36,7 @@ function App() {
         ) : (
           <div>
             <h3>Base64 Data:</h3>
-            <pre className="App-pre">{combinedBase64}</pre>
+            <img src={combinedBase64} alt="Fetched from API" />
           </div>
         )}
         <a
