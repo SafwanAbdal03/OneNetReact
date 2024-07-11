@@ -9,7 +9,7 @@ function App() {
   const config = {
     method: 'get',
     maxBodyLength: Infinity,
-    baseurl: 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints',
+    url: 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints',
     headers: { 
       'APi-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=',
       "Host": "postman-echo.com",
