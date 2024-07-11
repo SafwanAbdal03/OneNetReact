@@ -38,7 +38,7 @@ function App() {
         ) : (
           <div>
             <h3>Base64 Data:</h3>
-            <pre>{combinedBase64}</pre>
+            <pre className="App-pre">{combinedBase64}</pre>
           </div>
         )}
         <a
@@ -55,3 +55,4 @@ function App() {
 }
 
 export default App;
+

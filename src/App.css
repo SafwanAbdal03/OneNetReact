@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+/* Added CSS to handle long base64 strings */
+.App-pre {
+  white-space: pre-wrap; /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -pre-wrap; /* Opera <7 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
+}
+
