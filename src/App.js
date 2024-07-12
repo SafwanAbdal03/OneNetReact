@@ -18,7 +18,7 @@ function App() {
         }
       })
       .catch(error => {
-        console.error(error);
+        console.error('Detailed error:', error);
         setError(`Error fetching data: ${error.response ? error.response.data.message : error.message}`);
       });
   }, []);
