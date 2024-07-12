@@ -27,7 +27,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>Base64 Data:</p>
-        {error ? <p>{error}</p> : <img src={`data:image/jpeg;base64,${img}`} alt="Fetched from API" />}
+        {error ? <p>{error}</p> : img && <img src={`data:image/jpeg;base64,${img}`} alt="Fetched from API" />}
       </header>
     </div>
   );
