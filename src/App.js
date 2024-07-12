@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+// Function to fetch data and display the image
+function fetchDataAndDisplayImage() {
+  const errorMessage = document.createElement('p');
+  errorMessage.style.color = 'red';
+  document.body.appendChild(errorMessage);
 
-function App() {
-  const [img, setImg] = useState(null);
-  const [error, setError] = useState(null);
+  const fetchedImage = document.createElement('img');
+  fetchedImage.style.display = 'none';
+  document.body.appendChild(fetchedImage);
 
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/data')
-      .then(response => {
-        console.log(response.data);
-        if (response.data.errno === 0) {
-          const combinedBase64 = response.data.data.datastreams.map(stream => stream.datapoints[0].value).join('');
-          setImg(combinedBase64);
-        } 
-        else {
-          setError('Failed to load data');
-        }
-      })
-      .catch(error => {
-        console.error('Detailed error:', error);
-        setError(`Error fetching data: ${error.response ? error.response.data.message : error.message}`);
-      });
-  }, []);
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>Base64 Data:</p>
-        {error ? <p>{error}</p> : img && <img src={`data:image/jpeg;base64,${img}`} alt="Fetched from API" />}
-      </header>
-    </div>
-  );
+  fetch('http://localhost:8080/api/data')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.errno === 0) {
+        const combinedBase64 = data.data.datastreams.map(stream => stream.datapoints[0].value).join('');
+        fetchedImage.src = `data:image/jpeg;base64,${combinedBase64}`;
+        fetchedImage.style.display = 'block';
+      } else {
+        errorMessage.textContent = 'Failed to load data';
+      }
+    })
+    .catch(error => {
+      console.error('Detailed error:', error);
+      errorMessage.textContent = `Error fetching data: ${error.message}`;
+    });
 }
 
-export default App;
-
+// Run the function to fetch data and display the image
+fetchDataAndDisplayImage();
