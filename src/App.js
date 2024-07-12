@@ -8,7 +8,7 @@ function fetchDataAndDisplayImage() {
   fetchedImage.style.display = 'none';
   document.body.appendChild(fetchedImage);
 
-  fetch('http://localhost:443/api/data')
+  fetch('http://localhost:8080/api/data')
     .then(response => response.json())
     .then(data => {
       console.log(data);
