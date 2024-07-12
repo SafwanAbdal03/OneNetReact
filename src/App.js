@@ -13,7 +13,8 @@ function App() {
         if (response.data.errno === 0) {
           const combinedBase64 = response.data.data.datastreams.map(stream => stream.datapoints[0].value).join('');
           setImg(combinedBase64);
-        } else {
+        } 
+        else {
           setError('Failed to load data');
         }
       })
