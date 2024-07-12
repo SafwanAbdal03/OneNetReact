@@ -5,6 +5,8 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 8080;
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 app.use(cors());
 
 app.get('/api/data', async (req, res) => {
