@@ -11,7 +11,7 @@ app.use(cors());
 
 app.get('/api/data', async (req, res) => {
   try {
-    const url = 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
+    const url = 'http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
     const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
     console.log(`Requesting URL: ${url} with headers:`, headers);
 
