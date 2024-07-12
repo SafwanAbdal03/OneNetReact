@@ -8,7 +8,7 @@ function fetchDataAndDisplayImage() {
   fetchedImage.style.display = 'none';
   document.body.appendChild(fetchedImage);
 
-  fetch('http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints')
+  fetch('http://localhost:8080/api/data')
     .then(response => response.json())
     .then(data => {
       console.log(data);
