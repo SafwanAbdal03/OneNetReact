@@ -13,7 +13,12 @@ function fetchDataAndDisplayImage() {
     .then(data => {
       console.log(data);
       if (data.errno === 0) {
-        const combinedBase64 = data.data.datastreams.map(stream => stream.datapoints[0].value).join('');
+        const combinedBase64 = data.data.datastreams
+          .map(stream => stream.datapoints)
+          .flat()
+          .sort((a, b) => new Date(b.at) - new Date(a.at)) // Sort by timestamp
+          .map(datapoint => datapoint.value)
+          .join('');
         fetchedImage.src = `data:image/jpeg;base64,${combinedBase64}`;
         fetchedImage.style.display = 'block';
       } else {
