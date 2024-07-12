@@ -7,7 +7,7 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:80/api/data')
+    axios.get('http://localhost:8080/api/data')
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
