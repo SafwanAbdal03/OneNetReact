@@ -35,7 +35,7 @@ function App() {
           <p>{error}</p>
         ) : (
           <div>
-            <h3>Base64 Data:</h3>
+            <h3>Base64 Decoded Image:</h3>
             <img src={`data:image/jpeg;base64,${combinedBase64}`} alt="Fetched from API" />
           </div>
         )}
