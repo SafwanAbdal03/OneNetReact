@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 // Before used 4000 and also 8080. 443 good for https
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+//process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 
