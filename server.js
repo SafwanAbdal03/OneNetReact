@@ -1,14 +1,13 @@
 const express = require('express');
 const axios = require('axios');
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
-// Before used 4000 and also 8080. 443 good for https
-
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -28,10 +27,13 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.listen(port, () => {
   console.log(`Proxy server is running at http://localhost:${port}`);
 });
 
 module.exports = app;
-
 
