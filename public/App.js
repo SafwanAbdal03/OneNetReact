@@ -1,30 +1,38 @@
-// Function to fetch data and display the image
-function fetchDataAndDisplayImage() {
-  const errorMessage = document.createElement('p');
-  errorMessage.style.color = 'red';
-  document.body.appendChild(errorMessage);
+const express = require('express');
+const axios = require('axios');
+const path = require('path');
+const cors = require('cors');
 
-  const fetchedImage = document.createElement('img');
-  fetchedImage.style.display = 'none';
-  document.body.appendChild(fetchedImage);
+const app = express();
+const port = process.env.PORT || 8080;
 
-  fetch('http://localhost:8080/api/data')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.errno === 0) {
-        const combinedBase64 = data.data.datastreams.map(stream => stream.datapoints[0].value).join('');
-        fetchedImage.src = `data:image/jpeg;base64,${combinedBase64}`;
-        fetchedImage.style.display = 'block';
-      } else {
-        errorMessage.textContent = 'Failed to load data';
-      }
-    })
-    .catch(error => {
-      console.error('Detailed error:', error);
-      errorMessage.textContent = `Error fetching data: ${error.message}`;
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/data', async (req, res) => {
+  try {
+    const url = 'http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
+    const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
+    console.log(`Requesting URL: ${url} with headers:`, headers);
+
+    const response = await axios.get(url, { headers });
+    console.log('Response Data:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error.response ? error.response.data : error.message);
+    res.status(error.response ? error.response.status : 500).send({
+      message: 'Error fetching data',
+      details: error.response ? error.response.data : error.message
     });
-}
+  }
+});
 
-// Run the function to fetch data and display the image
-fetchDataAndDisplayImage();
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(port, () => {
+  console.log(`Proxy server is running at http://localhost:${port}`);
+});
+
+module.exports = app;
