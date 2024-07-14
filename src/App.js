@@ -7,7 +7,7 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/data')
+    axios.get('http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints')
       .then(response => {
         console.log(response.data);
         if (response.data.errno === 0) {
