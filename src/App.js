@@ -21,3 +21,4 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.textContent = `Error fetching data: ${error.message}`;
     });
 });
+
