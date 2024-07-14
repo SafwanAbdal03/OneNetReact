@@ -1,13 +1,13 @@
 const express = require('express');
 const axios = require('axios');
-const path = require('path');
 const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -25,10 +25,6 @@ app.get('/api/data', async (req, res) => {
       details: error.response ? error.response.data : error.message
     });
   }
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(port, () => {
