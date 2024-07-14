@@ -1,4 +1,4 @@
-process.eprocess.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Disable SSL verification (not recommended for production)
+//process.eprocess.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Disable SSL verification (not recommended for production)
 
 const express = require('express');
 const axios = require('axios');
