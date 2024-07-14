@@ -1,19 +1,55 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const response = await fetch('/api/data');
-    const data = await response.json();
-    console.log('Data:', data);
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
 
-    // Assuming the image data is base64-encoded and stored in `data.image`
-    const base64Image = data.image;
-    if (base64Image) {
-      const imgElement = document.createElement('img');
-      imgElement.src = `data:image/jpeg;base64,${base64Image}`;
-      document.body.appendChild(imgElement);
-    } else {
-      console.error('No image data found');
-    }
-  } catch (error) {
-    console.error('Error fetching or displaying data:', error);
-  }
-});
+function App() {
+  const [combinedBase64, setCombinedBase64] = useState('');
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/data')
+      .then(response => {
+        console.log(response.data);
+        if (response.data.errno === 0) {
+          const datastreams = response.data.data.datastreams;
+          const base64Values = datastreams.map(stream => stream.datapoints[0].value);
+          const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
+          setCombinedBase64(combinedBase64);
+        } else {
+          setError('Failed to load data');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        setError(`Error fetching data: ${error.message}`);
+      });
+  }, []);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <div>
+            <h3>Base64 Data:</h3>
+            <img src={`data:image/jpeg;base64,${combinedBase64}`} alt="Fetched from API" />
+          </div>
+        )}
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
