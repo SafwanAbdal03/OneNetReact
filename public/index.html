@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64 Image Decoded</title>
+  <title>Base64 Image Fetch</title>
 </head>
 <body>
-  <div id="root"></div>
-  <script src="./src/App.js"></script>
+  <div id="content">
+    <p>Edit <code>src/App.js</code> and save to reload.</p>
+    <h3>Base64 Data:</h3>
+    <p id="error" style="color: red;"></p>
+    <img id="image" style="display: none;" alt="Fetched from API" />
+  </div>
+  <script src="./app.js"></script>
 </body>
 </html>
 
