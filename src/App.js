@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
 
-  fetch('http://localhost:8080/api/data')
+  fetch('/api/data') // Ensure the correct API path
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log("Data fetched:", data);
       if (data.errno === 0) {
         const datastreams = data.data.datastreams;
         const base64Values = datastreams.map(stream => stream.datapoints[0].value);
