@@ -34,11 +34,6 @@ module.exports = app;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Disable SSL verification (not recommended for production)
 
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors'); // Use CORS middleware to handle cross-origin requests
-
-
 app.use(cors()); // Enable all CORS requests
 
 // Root route for testing
