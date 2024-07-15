@@ -11,6 +11,7 @@ html, body {
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
   text-align: center;
   padding: 20px; /* Added padding to avoid content touching the edges */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
@@ -27,8 +28,9 @@ h3 {
 img {
   max-width: 100%;
   max-height: 100%;
-  width: auto;
+  width: 100%;
   height: auto;
   display: block;
   margin: auto;
 }
+
