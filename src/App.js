@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
 
-  fetch('http://localhost:8080/api/data') // Ensure the correct API path
+  fetch('http://localhost:443/api/data') // Ensure the correct API path
     .then(response => response.json())
     .then(data => {
       console.log("Data fetched:", data);
