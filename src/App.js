@@ -1,4 +1,3 @@
-import './App.css';
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
