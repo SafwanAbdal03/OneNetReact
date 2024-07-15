@@ -2,7 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
 
-  fetch('http://localhost:443/api/data') // Ensure the correct API path
+  // Get query parameters from the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const apiKey = urlParams.get('api');
+  const deviceId = urlParams.get('device');
+
+  if (!apiKey || !deviceId) {
+    errorElement.textContent = 'API key and device ID are required in the URL query parameters.';
+    return;
+  }
+
+  fetch(`http://localhost:8080/api/data?api=${apiKey}&device=${deviceId}`)
     .then(response => response.json())
     .then(data => {
       console.log("Data fetched:", data);
@@ -21,4 +31,5 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.textContent = `Error fetching data: ${error.message}`;
     });
 });
+
 

@@ -2,20 +2,24 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 
-
 const app = express();
-const port = process.env.PORT || 443;
-// for http, the port number 8080 is working perfectly fine. 
-//Now testing for https.
+const port = process.env.PORT || 8080;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 
 app.get('/api/data', async (req, res) => {
+  const apiKey = req.query.api;
+  const deviceId = req.query.device;
+
+  if (!apiKey || !deviceId) {
+    return res.status(400).json({ message: 'API key and device ID are required' });
+  }
+
   try {
-    const url = 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
-    const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
+    const url = `https://api.onenet.hk.chinamobile.com/devices/${deviceId}/datapoints`;
+    const headers = { 'API-Key': apiKey };
     console.log(`Requesting URL: ${url} with headers:`, headers);
 
     const response = await axios.get(url, { headers });
@@ -35,3 +39,4 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
