@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const api = require('API-Key');
+
 
 const app = express();
 const port = process.env.PORT || 443;
@@ -15,8 +15,7 @@ app.use(cors());
 app.get('/api/data', async (req, res) => {
   try {
     const url = 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
-    //const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
-    const headers = { 'API-Key': api };
+    const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
     console.log(`Requesting URL: ${url} with headers:`, headers);
 
     const response = await axios.get(url, { headers });
