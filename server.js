@@ -9,7 +9,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 
-app.get('api/data', async (req, res) => {
+app.get('/api/data', async (req, res) => {
   try {
     const url = 'http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
     const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
