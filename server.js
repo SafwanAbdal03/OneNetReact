@@ -3,7 +3,9 @@ const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 443;
+// for http, the port number 8080 is working perfectly fine. 
+//Now testing for https.
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -11,7 +13,7 @@ app.use(cors());
 
 app.get('/api/data', async (req, res) => {
   try {
-    const url = 'http://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
+    const url = 'https://api.onenet.hk.chinamobile.com/devices/161379916/datapoints';
     const headers = { 'API-Key': '7Nvk6zxDmTRJ2tjKz8yXStogHRI=' };
     console.log(`Requesting URL: ${url} with headers:`, headers);
 
