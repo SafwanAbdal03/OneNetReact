@@ -26,3 +26,9 @@
   max-width: 90%; /* Ensures the text container is not too wide */
   margin: auto; /* Centers the text container */
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+  width: auto\9; /* ie8 */
+}
