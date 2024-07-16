@@ -9,12 +9,22 @@
 </head>
 <body>
   <div id="content">
-    <p id="error" class="error"></p>
-    <img id="image" alt="Fetched from API">
+    <iframe id="data-iframe" src="https://one-net-react.vercel.app/?api=7Nvk6zxDmTRJ2tjKz8yXStogHRI=&device=161383370" width="100%" height="100%" frameborder="0"></iframe>
   </div>
-  <script src="../src/App.js"></script> 
+  <script>
+    // JavaScript to refresh the iframe every 60 seconds
+    function refreshIframe() {
+      var iframe = document.getElementById('data-iframe');
+      iframe.src = iframe.src;
+    }
+
+    // Set interval to refresh iframe every 60 seconds (60000 milliseconds)
+    setInterval(refreshIframe, 60000);
+  </script>
+  <script src="../src/App.js"></script>
 </body>
 </html>
+
 
 
 
