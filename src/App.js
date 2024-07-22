@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  fetch(`http://localhost:443/api/data?api=${apiKey}&device=${deviceId}`)
+  fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
     .then(response => response.json())
     .then(data => {
       console.log("Data fetched:", data);
