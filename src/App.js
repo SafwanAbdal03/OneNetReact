@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  fetch(`https://api.onenet.hk.chinamobile.com/devices/${deviceId}/datapoints`)
+  fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
     .then(response => response.json())
     .then(data => {
       console.log("Data fetched:", data);
