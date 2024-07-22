@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  fetch(`http://localhost:443/api/data?api=${apiKey}&device=${deviceId}`)
+  fetch(`https://api.onenet.hk.chinamobile.com/devices/${deviceId}/datapoints`)
     .then(response => response.json())
     .then(data => {
       console.log("Data fetched:", data);
