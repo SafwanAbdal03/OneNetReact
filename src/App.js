@@ -18,8 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Data fetched:", data);
       if (data.errno === 0) {
         const datastreams = data.data.datastreams;
-        const base64Values = datastreams.map(stream => stream.datapoints[0].value);
+        const allowedIds = ['3200_0_5750', '3200_1_5750'];
+
+        // Filter the datastreams to only include the ones with allowed IDs
+        const filteredDatastreams = datastreams.filter(stream => allowedIds.includes(stream.id));
+        
+        // Extract base64 values from the filtered datastreams
+        const base64Values = filteredDatastreams.map(stream => stream.datapoints[0].value);
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
+
         imageElement.src = `data:image/jpeg;base64,${combinedBase64}`;
         imageElement.style.display = 'block';
       } else {
@@ -31,5 +38,4 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.textContent = `Error fetching data: ${error.message}`;
     });
 });
-
 
