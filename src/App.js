@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Data fetched:", data);
       if (data.errno === 0) {
         const datastreams = data.data.datastreams;
-        const allowedIds = ['3200_0_5750', '3200_1_5750'];
+        const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750'];
 
         // Filter the datastreams to only include the ones with allowed IDs
         const filteredDatastreams = datastreams.filter(stream => allowedIds.includes(stream.id));
