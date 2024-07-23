@@ -20,11 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const datastreams = data.data.datastreams;
         const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750'];
 
-        // Filter the datastreams to only include the ones with allowed IDs
-        const filteredDatastreams = datastreams.filter(stream => allowedIds.includes(stream.id));
-        
-        // Extract base64 values from the filtered datastreams
-        const base64Values = filteredDatastreams.map(stream => stream.datapoints[0].value);
+        // Sort the datastreams to match the order of allowed IDs
+        const sortedDatastreams = allowedIds.map(id => 
+          datastreams.find(stream => stream.id === id)
+        ).filter(stream => stream !== undefined); // Filter out any undefined streams
+
+        // Extract base64 values from the sorted datastreams
+        const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
 
         imageElement.src = `data:image/jpeg;base64,${combinedBase64}`;
