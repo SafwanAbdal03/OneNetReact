@@ -1,11 +1,11 @@
-import Upscaler from 'upscaler';
+import pica from 'https://unpkg.com/pica@latest/dist/pica.min.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
   const canvasElement = document.getElementById('upscaledCanvas');
 
-  const upscaler = new Upscaler({ model: 'x2' });
+  const picaInstance = pica();
 
   // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -36,19 +36,27 @@ document.addEventListener("DOMContentLoaded", function () {
           const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
 
           imageElement.src = `data:image/jpeg;base64,${combinedBase64}`;
-          imageElement.onload = async () => {
-            // Use upscalerjs to upscale the image
-            try {
-              const upscaledImage = await upscaler.upscale(imageElement);
-              const ctx = canvasElement.getContext('2d');
-              canvasElement.width = upscaledImage.width;
-              canvasElement.height = upscaledImage.height;
-              ctx.drawImage(upscaledImage, 0, 0, canvasElement.width, canvasElement.height);
-              canvasElement.style.display = 'block';
-            } catch (error) {
-              console.error('Error upscaling image:', error);
-              errorElement.textContent = 'Error upscaling image';
-            }
+          imageElement.onload = () => {
+            const originalCanvas = document.createElement('canvas');
+            originalCanvas.width = imageElement.width;
+            originalCanvas.height = imageElement.height;
+            const originalContext = originalCanvas.getContext('2d');
+            originalContext.drawImage(imageElement, 0, 0);
+
+            // Set the size of the upscaled canvas
+            canvasElement.width = imageElement.width * 2; // Upscale by a factor of 2
+            canvasElement.height = imageElement.height * 2;
+
+            // Use Pica to upscale the image
+            picaInstance.resize(originalCanvas, canvasElement)
+              .then(result => {
+                console.log('Image upscaled successfully');
+                canvasElement.style.display = 'block';
+              })
+              .catch(error => {
+                console.error('Error upscaling image:', error);
+                errorElement.textContent = 'Error upscaling image';
+              });
           };
           imageElement.style.display = 'block';
         } else {
@@ -80,4 +88,3 @@ document.addEventListener("DOMContentLoaded", function () {
     return new Blob([u8arr], { type: mime });
   }
 });
-
