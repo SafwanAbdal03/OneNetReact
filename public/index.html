@@ -6,15 +6,41 @@
   <title>Base64 Image Fetch</title>
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="/public/App.css">
+  <style>
+    /* Spinner CSS */
+    .spinner {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #content {
+      position: relative;
+    }
+  </style>
 </head>
 <body>
   <div id="content">
+    <div id="spinner" class="spinner"></div>
     <p id="error" class="error"></p>
     <img id="image" alt="Fetched from API" style="display: none;">
   </div>
   <script src="../src/App.js"></script> 
 </body>
 </html>
+
 
 
 
