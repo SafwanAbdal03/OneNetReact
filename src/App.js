@@ -13,9 +13,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const upscaler = new upscaler({
-    model: 'x2', // You can change the model to other options like 'x3' or 'x4'
-  });
+  // Initialize Upscaler
+  let upscaler;
+
+  // Load the Upscaler script
+  const script = document.createElement('script');
+  script.src = "https://cdn.jsdelivr.net/npm/upscaler@1.4.1";
+  script.onload = () => {
+    upscaler = new Upscaler({
+      model: 'x2', // You can change the model to other options like 'x3' or 'x4'
+    });
+    fetchData();
+    setInterval(fetchData, 20000); // Fetch data every 20 seconds
+  };
+  document.head.appendChild(script);
 
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
@@ -62,11 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
         errorElement.textContent = `Error fetching data: ${error.message}`;
       });
   };
-
-  // Fetch data initially
-  fetchData();
-
-  // Fetch data every 20 seconds
-  setInterval(fetchData, 20000);
 });
+
 
