@@ -13,13 +13,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const fetchData = () => {
+    const tempImage = new Image();
+
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
         console.log("Data fetched:", data);
         if (data.errno === 0) {
           const datastreams = data.data.datastreams;
-          const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750','3200_5_5750' ];
+          const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
           // Sort the datastreams to match the order of allowed IDs
           const sortedDatastreams = allowedIds.map(id =>
@@ -30,8 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
           const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
           const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
 
-          imageElement.src = `data:image/jpeg;base64,${combinedBase64}`;
-          imageElement.style.display = 'block';
+          tempImage.onload = () => {
+            imageElement.src = tempImage.src;
+            imageElement.style.display = 'block'; // Ensure the image is displayed
+          };
+
+          tempImage.src = `data:image/jpeg;base64,${combinedBase64}`;
         } else {
           errorElement.textContent = 'Failed to load data';
         }
