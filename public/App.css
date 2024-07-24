@@ -32,6 +32,6 @@ img {
   height: auto;
   display: block;
   margin: auto;
-  object-fit: cover;
+  object-fit: contain;
 }
 
