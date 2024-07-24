@@ -13,20 +13,24 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+  // Function to load the Upscaler script
+  function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = callback;
+    document.head.appendChild(script);
+  }
+
   // Initialize Upscaler
   let upscaler;
 
-  // Load the Upscaler script
-  const script = document.createElement('script');
-  script.src = "https://cdn.jsdelivr.net/npm/upscaler@1.4.1";
-  script.onload = () => {
+  loadScript('https://cdn.jsdelivr.net/npm/upscaler@1.4.1', () => {
     upscaler = new Upscaler({
       model: 'x2', // You can change the model to other options like 'x3' or 'x4'
     });
     fetchData();
     setInterval(fetchData, 20000); // Fetch data every 20 seconds
-  };
-  document.head.appendChild(script);
+  });
 
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
@@ -55,6 +59,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             upscaler.upscale(canvasElement)
               .then(upscaledCanvas => {
+                // Clear the previous upscaled image if any
+                const previousUpscaledCanvas = document.querySelector('#content canvas');
+                if (previousUpscaledCanvas) {
+                  previousUpscaledCanvas.remove();
+                }
+
                 document.getElementById('content').appendChild(upscaledCanvas);
                 upscaledCanvas.style.display = 'block';
               })
@@ -74,5 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 });
+
 
 
