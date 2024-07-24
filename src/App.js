@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append('scale', '2'); // Upscale by a factor of 2
             formData.append('noise', '1'); // Add noise reduction if necessary
 
-            fetch('https://waifu2x.booru.pics/api/upload', {
+            fetch('https://waifu2x.booru.pics/', {
               method: 'POST',
               body: formData
             })
