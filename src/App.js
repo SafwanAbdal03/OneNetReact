@@ -1,11 +1,9 @@
-import pica from 'https://unpkg.com/pica@latest/dist/pica.min.js';
-
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
   const canvasElement = document.getElementById('upscaledCanvas');
 
-  const picaInstance = pica();
+  const picaInstance = window.pica();
 
   // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -88,3 +86,4 @@ document.addEventListener("DOMContentLoaded", function () {
     return new Blob([u8arr], { type: mime });
   }
 });
+
