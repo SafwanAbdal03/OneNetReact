@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
-  const canvasElement = document.getElementById('upscaledCanvas');
 
   // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -12,25 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     errorElement.textContent = 'API key and device ID are required in the URL query parameters.';
     return;
   }
-
-  // Function to load the Upscaler script
-  function loadScript(src, callback) {
-    const script = document.createElement('script');
-    script.src = src;
-    script.onload = callback;
-    document.head.appendChild(script);
-  }
-
-  // Initialize Upscaler
-  let upscaler;
-
-  loadScript('https://cdn.jsdelivr.net/npm/upscaler@1.4.1', () => {
-    upscaler = new Upscaler({
-      model: 'x2', // You can change the model to other options like 'x3' or 'x4'
-    });
-    fetchData();
-    setInterval(fetchData, 20000); // Fetch data every 20 seconds
-  });
 
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
@@ -51,28 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
 
           imageElement.src = `data:image/jpeg;base64,${combinedBase64}`;
-          imageElement.onload = () => {
-            const ctx = canvasElement.getContext('2d');
-            canvasElement.width = imageElement.width;
-            canvasElement.height = imageElement.height;
-            ctx.drawImage(imageElement, 0, 0);
-
-            upscaler.upscale(canvasElement)
-              .then(upscaledCanvas => {
-                // Clear the previous upscaled image if any
-                const previousUpscaledCanvas = document.querySelector('#content canvas');
-                if (previousUpscaledCanvas) {
-                  previousUpscaledCanvas.remove();
-                }
-
-                document.getElementById('content').appendChild(upscaledCanvas);
-                upscaledCanvas.style.display = 'block';
-              })
-              .catch(error => {
-                console.error('Error upscaling image:', error);
-                errorElement.textContent = 'Error upscaling image';
-              });
-          };
           imageElement.style.display = 'block';
         } else {
           errorElement.textContent = 'Failed to load data';
@@ -83,7 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
         errorElement.textContent = `Error fetching data: ${error.message}`;
       });
   };
+
+  // Fetch data initially
+  fetchData();
+
+  // Fetch data every 20 seconds
+  setInterval(fetchData, 20000);
 });
-
-
-
