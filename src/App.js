@@ -1,11 +1,9 @@
-import Upscaler from 'upscaler';
-
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
   const imageElement = document.getElementById('image');
   const canvasElement = document.getElementById('upscaledCanvas');
 
-  const upscaler = new Upscaler({ model: 'x2' });
+  const upscaler = new window.Upscaler({ model: 'x2' });
 
   // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -79,3 +77,4 @@ document.addEventListener("DOMContentLoaded", function () {
     return new Blob([u8arr], { type: mime });
   }
 });
+
