@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const upscaler = new Upscaler({
+  const upscaler = new upscaler({
     model: 'x2', // You can change the model to other options like 'x3' or 'x4'
   });
 
