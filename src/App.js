@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
-      .then(response => response.json())
+      .then(response => {
+        console.log('Response received:', response);
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json();
+      })
       .then(data => {
         console.log("Data fetched:", data);
         if (data.errno === 0) {
@@ -32,10 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
           // Extract base64 values from the sorted datastreams and create image elements
           sortedDatastreams.forEach((stream, index) => {
             const base64Value = stream.datapoints[0].value;
+            console.log(`Image ${index + 1} base64 data:`, base64Value);
             const imgElement = document.createElement('li');
             imgElement.innerHTML = `<img src="data:image/jpeg;base64,${base64Value}" alt="Image ${index + 1}" uk-cover>`;
             imageContainer.appendChild(imgElement);
           });
+
+          // Refresh the slideshow component to account for the new images
+          UIkit.slideshow(imageContainer).show(0);
         } else {
           errorElement.textContent = 'Failed to load data';
         }
@@ -52,4 +62,5 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fetch data every 20 seconds
   setInterval(fetchData, 20000);
 });
+
 
