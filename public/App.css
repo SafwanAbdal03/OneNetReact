@@ -13,27 +13,31 @@ html, body {
   height: 100%;
   width: 100%;
   text-align: center;
-  padding: 20px; /* Added padding to avoid content touching the edges */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 h3 {
   margin: 20px 0;
 }
 
-/* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
+  max-width: 100%;
+  height: 100%;
   position: relative;
   margin: auto;
 }
 
-/* Hide the images by default */
 .mySlides {
   display: none;
 }
 
-/* Next & previous buttons */
+.mySlides img {
+  width: 100%;
+  height: auto;
+  max-height: 100vh; /* Ensure the image doesn't exceed the viewport height */
+}
+
 .prev, .next {
   cursor: pointer;
   position: absolute;
@@ -59,7 +63,6 @@ h3 {
   border-radius: 3px 0 0 3px;
 }
 
-/* Number text (1/3 etc) */
 .numbertext {
   color: #f2f2f2;
   font-size: 12px;
@@ -68,7 +71,6 @@ h3 {
   top: 0;
 }
 
-/* Caption text */
 .text {
   color: #f2f2f2;
   font-size: 15px;
@@ -79,7 +81,6 @@ h3 {
   text-align: center;
 }
 
-/* Fading animation */
 .fade {
   -webkit-animation-name: fade;
   -webkit-animation-duration: 1.5s;
@@ -96,5 +97,4 @@ h3 {
   from {opacity: .4} 
   to {opacity: 1}
 }
-
 
