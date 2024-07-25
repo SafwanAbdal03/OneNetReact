@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
+        console.log("Data fetched:", data); // Debugging log
         if (data.errno === 0) {
           const datastreams = data.data.datastreams;
           const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
           
           // Display only the most recent 5 images
           const recentBase64Values = base64Values.slice(0, 5);
+          console.log("Recent base64 values:", recentBase64Values); // Debugging log
 
           slideshowContainer.innerHTML = '';
           recentBase64Values.forEach((base64, index) => {
@@ -59,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error); // Debugging log
         errorElement.textContent = `Error fetching data: ${error.message}`;
       });
   };
@@ -83,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
