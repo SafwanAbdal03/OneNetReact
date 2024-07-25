@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
-  const imageElement = document.getElementById('image');
+  const slideshowContainer = document.getElementById('slideshow');
 
-  // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
   const apiKey = urlParams.get('api');
   const deviceId = urlParams.get('device');
@@ -13,31 +12,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const fetchData = () => {
-    const tempImage = new Image();
-
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
-        console.log("Data fetched:", data);
         if (data.errno === 0) {
           const datastreams = data.data.datastreams;
           const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-          // Sort the datastreams to match the order of allowed IDs
           const sortedDatastreams = allowedIds.map(id =>
             datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined); // Filter out any undefined streams
+          ).filter(stream => stream !== undefined);
 
-          // Extract base64 values from the sorted datastreams
           const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
-          const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
+          
+          // Display only the most recent 5 images
+          const recentBase64Values = base64Values.slice(0, 5);
 
-          tempImage.onload = () => {
-            imageElement.src = tempImage.src;
-            imageElement.style.display = 'block'; // Ensure the image is displayed
-          };
+          slideshowContainer.innerHTML = '';
+          recentBase64Values.forEach((base64, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('mySlides', 'fade');
+            slideDiv.innerHTML = `
+              <div class="numbertext">${index + 1} / ${recentBase64Values.length}</div>
+              <img src="data:image/jpeg;base64,${base64}" style="width:100%">
+            `;
+            slideshowContainer.appendChild(slideDiv);
+          });
 
-          tempImage.src = `data:image/jpeg;base64,${combinedBase64}`;
+          // Add navigation buttons
+          const prev = document.createElement('a');
+          prev.classList.add('prev');
+          prev.innerHTML = '&#10094;';
+          prev.onclick = () => plusSlides(-1);
+
+          const next = document.createElement('a');
+          next.classList.add('next');
+          next.innerHTML = '&#10095;';
+          next.onclick = () => plusSlides(1);
+
+          slideshowContainer.appendChild(prev);
+          slideshowContainer.appendChild(next);
+
+          showSlides(slideIndex);
         } else {
           errorElement.textContent = 'Failed to load data';
         }
@@ -48,12 +64,26 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 
-  // Fetch data initially
-  fetchData();
+  let slideIndex = 1;
 
-  // Fetch data every 20 seconds
+  const plusSlides = (n) => {
+    showSlides(slideIndex += n);
+  };
+
+  const showSlides = (n) => {
+    const slides = document.getElementsByClassName("mySlides");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[slideIndex - 1].style.display = "block";
+  };
+
+  fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
