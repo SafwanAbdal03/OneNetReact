@@ -15,11 +15,13 @@
 <body>
   <div id="content">
     <p id="error" class="error"></p>
-    <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="animation: pull" id="slideshow">
-      <ul class="uk-slideshow-items" id="imageContainer"></ul>
-      <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-      <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
-    </div>
+    <div uk-slideshow>
+      <div class="uk-slideshow-items">
+          <div id="imageContainer">
+             
+          </div>
+      </div>
+  </div>
   </div>
   <script src="../src/App.js"></script>
 </body>
