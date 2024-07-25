@@ -24,21 +24,31 @@ document.addEventListener("DOMContentLoaded", function () {
             datastreams.find(stream => stream.id === id)
           ).filter(stream => stream !== undefined);
 
-          const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
+          // Concatenate base64 strings into one image
+          let images = [];
+          for (let i = 0; i < sortedDatastreams.length; i += 6) {
+            let concatenatedBase64 = '';
+            for (let j = 0; j < 6; j++) {
+              if (sortedDatastreams[i + j] && sortedDatastreams[i + j].datapoints[0].value) {
+                concatenatedBase64 += sortedDatastreams[i + j].datapoints[0].value;
+              }
+            }
+            images.push(concatenatedBase64);
+          }
 
-          // Concatenate base64 strings into one
-          const concatenatedBase64 = base64Values.join('');
-          console.log("Concatenated base64:", concatenatedBase64); // Debugging log
+          console.log("Concatenated base64 images:", images); // Debugging log
 
           slideshowContainer.innerHTML = '';
 
-          const slideDiv = document.createElement('div');
-          slideDiv.classList.add('mySlides', 'fade');
-          slideDiv.innerHTML = `
-            <div class="numbertext">1 / 1</div>
-            <img src="data:image/jpeg;base64,${concatenatedBase64}" style="width:100%">
-          `;
-          slideshowContainer.appendChild(slideDiv);
+          images.forEach((base64, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('mySlides', 'fade');
+            slideDiv.innerHTML = `
+              <div class="numbertext">${index + 1} / ${images.length}</div>
+              <img src="data:image/jpeg;base64,${base64}" style="width:100%; height: 100%; object-fit: cover;">
+            `;
+            slideshowContainer.appendChild(slideDiv);
+          });
 
           // Add navigation buttons
           const prev = document.createElement('a');
@@ -84,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
