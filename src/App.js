@@ -20,20 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
           const datastreams = data.data.datastreams;
           const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-          const sortedDatastreams = allowedIds.map(id =>
-            datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined);
-
-          // Concatenate base64 strings into one image
+          // Sort and concatenate base64 strings into separate images
           let images = [];
-          for (let i = 0; i < sortedDatastreams.length; i += 6) {
+          for (let i = 0; i < datastreams.length; i += 6) {
             let concatenatedBase64 = '';
             for (let j = 0; j < 6; j++) {
-              if (sortedDatastreams[i + j] && sortedDatastreams[i + j].datapoints[0].value) {
-                concatenatedBase64 += sortedDatastreams[i + j].datapoints[0].value;
+              const stream = datastreams.find(ds => ds.id === allowedIds[j]);
+              if (stream && stream.datapoints.length > 0) {
+                concatenatedBase64 += stream.datapoints[0].value;
               }
             }
-            images.push(concatenatedBase64);
+            if (concatenatedBase64) {
+              images.push(concatenatedBase64);
+            }
           }
 
           console.log("Concatenated base64 images:", images); // Debugging log
@@ -94,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
