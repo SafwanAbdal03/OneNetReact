@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
         console.log(`Combined base64 data:`, combinedBase64);
 
-        const imgElement = document.createElement('li');
+        const imgElement = document.createElement('div');
         imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}" alt="Image" uk-cover>`;
         imageContainer.appendChild(imgElement);
 
