@@ -25,21 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
           ).filter(stream => stream !== undefined);
 
           const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
-          
-          // Display only the most recent 5 images
-          const recentBase64Values = base64Values.slice(0, 5);
-          console.log("Recent base64 values:", recentBase64Values); // Debugging log
+
+          // Concatenate base64 strings into one
+          const concatenatedBase64 = base64Values.join('');
+          console.log("Concatenated base64:", concatenatedBase64); // Debugging log
 
           slideshowContainer.innerHTML = '';
-          recentBase64Values.forEach((base64, index) => {
-            const slideDiv = document.createElement('div');
-            slideDiv.classList.add('mySlides', 'fade');
-            slideDiv.innerHTML = `
-              <div class="numbertext">${index + 1} / ${recentBase64Values.length}</div>
-              <img src="data:image/jpeg;base64,${base64}" style="width:100%">
-            `;
-            slideshowContainer.appendChild(slideDiv);
-          });
+
+          const slideDiv = document.createElement('div');
+          slideDiv.classList.add('mySlides', 'fade');
+          slideDiv.innerHTML = `
+            <div class="numbertext">1 / 1</div>
+            <img src="data:image/jpeg;base64,${concatenatedBase64}" style="width:100%">
+          `;
+          slideshowContainer.appendChild(slideDiv);
 
           // Add navigation buttons
           const prev = document.createElement('a');
@@ -85,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
