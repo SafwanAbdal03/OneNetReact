@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Sort the datastreams to match the order of allowed IDs and limit to 5
           const sortedDatastreams = allowedIds.map(id =>
             datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined).slice(0, 1); // Filter out any undefined streams
+          ).filter(stream => stream !== undefined).slice(0, 6); // Filter out any undefined streams
 
           // Clear the previous images
           imageContainer.innerHTML = '';
