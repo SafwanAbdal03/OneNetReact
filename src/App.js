@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const fetchData = () => {
-    fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
+  const fetchData = async () => {
+    await fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => {
         console.log('Response received:', response);
         if (!response.ok) {
