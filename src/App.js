@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const datastreams = data.data.datastreams;
         const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-        // Sort the datastreams to match the order of allowed IDs and limit to 5
+        // Sort the datastreams to match the order of allowed IDs and limit to 6
         const sortedDatastreams = allowedIds.map(id =>
           datastreams.find(stream => stream.id === id)
         ).filter(stream => stream !== undefined).slice(0, 6); // Filter out any undefined streams
@@ -41,15 +41,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
         console.log(`Combined base64 data:`, combinedBase64);
-        
+
         const imgElement = document.createElement('li');
-        imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}">`;
+        imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}" alt="Image" uk-cover>`;
         imageContainer.appendChild(imgElement);
-        
+
         console.log(`image html:`, imageContainer.innerHTML);
 
         // Refresh the slideshow component to account for the new images
-        UIkit.update(imageContainer);
+        if (typeof UIkit !== 'undefined') {
+          UIkit.update(imageContainer);
+          UIkit.slideshow(imageContainer).show(0);
+        } else {
+          console.error('UIkit is not loaded.');
+        }
       } else {
         errorElement.textContent = 'Failed to load data';
       }
@@ -65,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fetch data every 20 seconds
   setInterval(fetchData, 20000);
 });
+
 
 
 
