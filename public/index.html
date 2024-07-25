@@ -5,13 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Base64 Image Fetch</title>
   <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.6.21/css/uikit.min.css" />
   <link rel="stylesheet" href="/public/App.css">
 </head>
 <body>
   <div id="content">
     <p id="error" class="error"></p>
-    <img id="image" alt="Fetched from API" style="display: none;">
+    <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="animation: pull" id="slideshow">
+      <ul class="uk-slideshow-items" id="imageContainer"></ul>
+      <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+      <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+    </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.6.21/js/uikit.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.6.21/js/uikit-icons.min.js"></script>
   <script src="../src/App.js"></script> 
 </body>
 </html>

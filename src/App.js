@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const errorElement = document.getElementById('error');
-  const imageElement = document.getElementById('image');
+  const imageContainer = document.getElementById('imageContainer');
 
   // Get query parameters from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,8 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const fetchData = () => {
-    const tempImage = new Image();
-
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
@@ -23,21 +21,21 @@ document.addEventListener("DOMContentLoaded", function () {
           const datastreams = data.data.datastreams;
           const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-          // Sort the datastreams to match the order of allowed IDs
+          // Sort the datastreams to match the order of allowed IDs and limit to 5
           const sortedDatastreams = allowedIds.map(id =>
             datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined); // Filter out any undefined streams
+          ).filter(stream => stream !== undefined).slice(0, 5); // Filter out any undefined streams
 
-          // Extract base64 values from the sorted datastreams
-          const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
-          const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
+          // Clear the previous images
+          imageContainer.innerHTML = '';
 
-          tempImage.onload = () => {
-            imageElement.src = tempImage.src;
-            imageElement.style.display = 'block'; // Ensure the image is displayed
-          };
-
-          tempImage.src = `data:image/jpeg;base64,${combinedBase64}`;
+          // Extract base64 values from the sorted datastreams and create image elements
+          sortedDatastreams.forEach((stream, index) => {
+            const base64Value = stream.datapoints[0].value;
+            const imgElement = document.createElement('li');
+            imgElement.innerHTML = `<img src="data:image/jpeg;base64,${base64Value}" alt="Image ${index + 1}" uk-cover>`;
+            imageContainer.appendChild(imgElement);
+          });
         } else {
           errorElement.textContent = 'Failed to load data';
         }
@@ -54,3 +52,4 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fetch data every 20 seconds
   setInterval(fetchData, 20000);
 });
+
