@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`Combined base64 data:`, combinedBase64);
 
         const imgElement = document.createElement('li');
-        imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}" alt="Combined Image" uk-cover>`;
+        imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}">`;
         imageContainer.appendChild(imgElement);
 
         // Refresh the slideshow component to account for the new images
