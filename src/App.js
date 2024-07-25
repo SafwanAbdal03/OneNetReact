@@ -41,14 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const base64Values = sortedDatastreams.map(stream => stream.datapoints[0].value);
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
         console.log(`Combined base64 data:`, combinedBase64);
-        console.log(`image html:`,imageContainer.innerHTML);
-
+        
         const imgElement = document.createElement('li');
         imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}">`;
         imageContainer.appendChild(imgElement);
+        
+        console.log(`image html:`, imageContainer.innerHTML);
 
         // Refresh the slideshow component to account for the new images
-        UIkit.slideshow(imageContainer).show(0);
+        UIkit.update(imageContainer);
       } else {
         errorElement.textContent = 'Failed to load data';
       }
