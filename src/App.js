@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const combinedBase64 = base64Values.join(''); // Concatenate the base64 values
         console.log(`Combined base64 data:`, combinedBase64);
         console.log(imageContainer);
-        console.log(innerHTML);
+        console.log(imageContainer.innerHTML);
 
         const imgElement = document.createElement('li');
         imgElement.innerHTML = `<img src="data:image/jpeg;base64,${combinedBase64}">`;
