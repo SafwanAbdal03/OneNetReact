@@ -22,7 +22,7 @@ h3 {
 }
 
 .slideshow-container {
-  max-width: 100%;
+  width: 100%;
   height: 100%;
   position: relative;
   margin: auto;
@@ -34,8 +34,8 @@ h3 {
 
 .mySlides img {
   width: 100%;
-  height: auto;
-  max-height: 100vh; /* Ensure the image doesn't exceed the viewport height */
+  height: 100%;
+  object-fit: cover;
 }
 
 .prev, .next {
@@ -97,4 +97,5 @@ h3 {
   from {opacity: .4} 
   to {opacity: 1}
 }
+
 
