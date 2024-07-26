@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     errorElement.textContent = 'API key and device ID are required in the URL query parameters.';
     return;
   }
-
+  let images = [];
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ).filter(stream => stream !== undefined);
 
           // Concatenate base64 strings into images
-          let images = [];
+          //let images = [];
           let concatenatedBase64 = '';
           sortedDatastreams.forEach(stream => {
             if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
