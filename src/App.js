@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   let images = [];
-  
+  let seenTimestamps = new Set();
+
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
@@ -30,32 +31,36 @@ document.addEventListener("DOMContentLoaded", function () {
           // Concatenate base64 strings into images
           let concatenatedBase64 = '';
           let timestamp = '';
-
           sortedDatastreams.forEach(stream => {
             if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
               concatenatedBase64 += stream.datapoints[0].value;
               timestamp = stream.datapoints[0].at;
             } else if (concatenatedBase64) {
-              images.push({ base64: concatenatedBase64, timestamp });
+              if (!seenTimestamps.has(timestamp)) {
+                images.push({ base64: concatenatedBase64, timestamp });
+                seenTimestamps.add(timestamp);
+              }
               concatenatedBase64 = '';
+              timestamp = '';
             }
           });
 
-          if (concatenatedBase64) {
+          if (concatenatedBase64 && !seenTimestamps.has(timestamp)) {
             images.push({ base64: concatenatedBase64, timestamp });
+            seenTimestamps.add(timestamp);
           }
 
           console.log("Concatenated base64 images:", images); // Debugging log
 
           slideshowContainer.innerHTML = '';
 
-          images.forEach((imgObj, index) => {
+          images.forEach((image, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.classList.add('mySlides', 'fade');
             slideDiv.innerHTML = `
               <div class="numbertext">${index + 1} / ${images.length}</div>
-              <img src="data:image/jpeg;base64,${imgObj.base64}" style="width:100%; height: 100%; object-fit: cover;">
-              <div class="timestamp">${imgObj.timestamp}</div>
+              <img src="data:image/jpeg;base64,${image.base64}" style="width:100%; height: 100%; object-fit: cover;">
+              <div class="timestamp">${image.timestamp}</div>
             `;
             slideshowContainer.appendChild(slideDiv);
           });
@@ -104,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
