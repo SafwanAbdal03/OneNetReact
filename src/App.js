@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
           let images = [];
           let concatenatedBase64 = '';
           sortedDatastreams.forEach(stream => {
-            if (stream.datapoints && stream.datapoints.length > 0) {
+            if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== '0') {
               concatenatedBase64 += stream.datapoints[0].value;
             }
           });
