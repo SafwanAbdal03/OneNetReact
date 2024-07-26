@@ -25,14 +25,18 @@ document.addEventListener("DOMContentLoaded", function () {
             datastreams.find(stream => stream.id === id)
           ).filter(stream => stream !== undefined);
 
-          // Concatenate base64 strings into one image
+          // Concatenate base64 strings into images
           let images = [];
           let concatenatedBase64 = '';
           sortedDatastreams.forEach(stream => {
-            if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "\'0\'") {
+            if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
               concatenatedBase64 += stream.datapoints[0].value;
+            } else if (concatenatedBase64) {
+              images.push(concatenatedBase64);
+              concatenatedBase64 = '';
             }
           });
+
           if (concatenatedBase64) {
             images.push(concatenatedBase64);
           }
@@ -95,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
