@@ -90,7 +90,7 @@ h3 {
 
 .timestamp {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   color: #f2f2f2;
