@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
     errorElement.textContent = 'API key and device ID are required in the URL query parameters.';
     return;
   }
+  
   let images = [];
+  
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
@@ -26,31 +28,34 @@ document.addEventListener("DOMContentLoaded", function () {
           ).filter(stream => stream !== undefined);
 
           // Concatenate base64 strings into images
-          //let images = [];
           let concatenatedBase64 = '';
+          let timestamp = '';
+
           sortedDatastreams.forEach(stream => {
             if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
               concatenatedBase64 += stream.datapoints[0].value;
+              timestamp = stream.datapoints[0].at;
             } else if (concatenatedBase64) {
-              images.push(concatenatedBase64);
+              images.push({ base64: concatenatedBase64, timestamp });
               concatenatedBase64 = '';
             }
           });
 
           if (concatenatedBase64) {
-            images.push(concatenatedBase64);
+            images.push({ base64: concatenatedBase64, timestamp });
           }
 
           console.log("Concatenated base64 images:", images); // Debugging log
 
           slideshowContainer.innerHTML = '';
 
-          images.forEach((base64, index) => {
+          images.forEach((imgObj, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.classList.add('mySlides', 'fade');
             slideDiv.innerHTML = `
               <div class="numbertext">${index + 1} / ${images.length}</div>
-              <img src="data:image/jpeg;base64,${base64}" style="width:100%; height: 100%; object-fit: cover;">
+              <img src="data:image/jpeg;base64,${imgObj.base64}" style="width:100%; height: 100%; object-fit: cover;">
+              <div class="timestamp">${imgObj.timestamp}</div>
             `;
             slideshowContainer.appendChild(slideDiv);
           });
@@ -99,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
