@@ -20,28 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
           const datastreams = data.data.datastreams;
           const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-          // Dynamically concatenate base64 strings into images
+          // Sort the datastreams to match the order of allowed IDs
+          const sortedDatastreams = allowedIds.map(id =>
+            datastreams.find(stream => stream.id === id)
+          ).filter(stream => stream !== undefined);
+
+          // Concatenate base64 strings into one image
           let images = [];
           let concatenatedBase64 = '';
-          let currentLength = 0;
-          let maxLength = 10000; // Example maximum length, adjust as needed
-
-          datastreams.forEach(stream => {
-            if (allowedIds.includes(stream.id) && stream.datapoints.length > 0) {
-              const part = stream.datapoints[0].value;
-              if (currentLength + part.length <= maxLength) {
-                concatenatedBase64 += part;
-                currentLength += part.length;
-              } else {
-                if (concatenatedBase64) {
-                  images.push(concatenatedBase64);
-                }
-                concatenatedBase64 = part;
-                currentLength = part.length;
-              }
+          sortedDatastreams.forEach(stream => {
+            if (stream.datapoints && stream.datapoints.length > 0) {
+              concatenatedBase64 += stream.datapoints[0].value;
             }
           });
-
           if (concatenatedBase64) {
             images.push(concatenatedBase64);
           }
