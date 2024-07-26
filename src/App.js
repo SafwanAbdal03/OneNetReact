@@ -18,21 +18,30 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Data fetched:", data); // Debugging log
         if (data.errno === 0) {
           const datastreams = data.data.datastreams;
-          const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750'];
+          const allowedIds = ['3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750'];
 
-          // Sort the datastreams to match the order of allowed IDs
-          const sortedDatastreams = allowedIds.map(id =>
-            datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined);
-
-          // Concatenate base64 strings into one image
+          // Dynamically concatenate base64 strings into images
           let images = [];
           let concatenatedBase64 = '';
-          sortedDatastreams.forEach(stream => {
-            if (stream.datapoints && stream.datapoints.length > 0) {
-              concatenatedBase64 += stream.datapoints[0].value;
+          let currentLength = 0;
+          let maxLength = 10000; // Example maximum length, adjust as needed
+
+          datastreams.forEach(stream => {
+            if (allowedIds.includes(stream.id) && stream.datapoints.length > 0) {
+              const part = stream.datapoints[0].value;
+              if (currentLength + part.length <= maxLength) {
+                concatenatedBase64 += part;
+                currentLength += part.length;
+              } else {
+                if (concatenatedBase64) {
+                  images.push(concatenatedBase64);
+                }
+                concatenatedBase64 = part;
+                currentLength = part.length;
+              }
             }
           });
+
           if (concatenatedBase64) {
             images.push(concatenatedBase64);
           }
@@ -95,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
