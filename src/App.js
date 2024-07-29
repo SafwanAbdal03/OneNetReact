@@ -27,12 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
             '3200_12_5750', '3200_13_5750', '3200_14_5750'
           ];
 
-          // Sort the datastreams to match the order of allowed IDs
           const sortedDatastreams = allowedIds.map(id =>
             datastreams.find(stream => stream.id === id)
           ).filter(stream => stream !== undefined);
 
-          // Concatenate base64 strings into images
           let concatenatedBase64 = '';
           let timestamp = '';
           sortedDatastreams.forEach(stream => {
@@ -114,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const showSlides = (n) => {
     const slides = document.getElementsByClassName("mySlides");
+    if (slides.length === 0) return; // Prevent error if no slides exist
     if (n > slides.length) { slideIndex = 1 }
     if (n < 1) { slideIndex = slides.length }
     for (let i = 0; i < slides.length; i++) {
@@ -126,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 
