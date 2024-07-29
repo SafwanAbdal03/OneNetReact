@@ -11,58 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  let images = JSON.parse(localStorage.getItem('images')) || [];
-  let seenTimestamps = new Set(images.map(img => img.timestamp));
-
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
         console.log("Data fetched:", data); // Debugging log
         if (data.errno === 0) {
-          const datastreams = data.data.datastreams;
-          const allowedIds = [
-            '3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750',
-            '3200_6_5750', '3200_7_5750', '3200_8_5750', '3200_9_5750', '3200_10_5750', '3200_11_5750',
-            '3200_12_5750', '3200_13_5750', '3200_14_5750'
-          ];
-
-          const sortedDatastreams = allowedIds.map(id =>
-            datastreams.find(stream => stream.id === id)
-          ).filter(stream => stream !== undefined);
-
-          let concatenatedBase64 = '';
-          let timestamp = '';
-          sortedDatastreams.forEach(stream => {
-            if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
-              concatenatedBase64 += stream.datapoints[0].value;
-              timestamp = stream.datapoints[0].at;
-            } else if (concatenatedBase64) {
-              if (!seenTimestamps.has(timestamp)) {
-                images.push({ base64: concatenatedBase64, timestamp });
-                seenTimestamps.add(timestamp);
-              }
-              concatenatedBase64 = '';
-              timestamp = '';
-            }
-          });
-
-          if (concatenatedBase64 && !seenTimestamps.has(timestamp)) {
-            images.push({ base64: concatenatedBase64, timestamp });
-            seenTimestamps.add(timestamp);
-          }
-
-          // Keep only the latest 5 images
-          if (images.length > 5) {
-            images = images.slice(-5);
-            seenTimestamps = new Set(images.map(img => img.timestamp));
-          }
-
-          localStorage.setItem('images', JSON.stringify(images));
-
-          console.log("Concatenated base64 images:", images); // Debugging log
-
-          updateSlideshow();
+          const images = data.images;
+          updateSlideshow(images);
         } else {
           errorElement.textContent = 'Failed to load data';
         }
@@ -73,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 
-  const updateSlideshow = () => {
+  const updateSlideshow = (images) => {
     slideshowContainer.innerHTML = '';
 
     images.forEach((image, index) => {
@@ -121,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
     slides[slideIndex - 1].style.display = "block";
   };
 
-  updateSlideshow();
   fetchData();
   setInterval(fetchData, 20000);
 });
+
 
 
 

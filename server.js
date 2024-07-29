@@ -9,6 +9,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 
+let deviceImages = {}; // Store images by device ID
+
 app.get('/api/data', async (req, res) => {
   const apiKey = req.query.api;
   const deviceId = req.query.device;
@@ -24,7 +26,45 @@ app.get('/api/data', async (req, res) => {
 
     const response = await axios.get(url, { headers });
     console.log('Response Data:', response.data);
-    res.json(response.data);
+
+    const datastreams = response.data.data.datastreams;
+    const allowedIds = [
+      '3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750',
+      '3200_6_5750', '3200_7_5750', '3200_8_5750', '3200_9_5750', '3200_10_5750', '3200_11_5750',
+      '3200_12_5750', '3200_13_5750', '3200_14_5750'
+    ];
+
+    const sortedDatastreams = allowedIds.map(id =>
+      datastreams.find(stream => stream.id === id)
+    ).filter(stream => stream !== undefined);
+
+    let concatenatedBase64 = '';
+    let timestamp = '';
+    let images = deviceImages[deviceId] || [];
+
+    sortedDatastreams.forEach(stream => {
+      if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
+        concatenatedBase64 += stream.datapoints[0].value;
+        timestamp = stream.datapoints[0].at;
+      } else if (concatenatedBase64) {
+        images.push({ base64: concatenatedBase64, timestamp });
+        concatenatedBase64 = '';
+        timestamp = '';
+      }
+    });
+
+    if (concatenatedBase64) {
+      images.push({ base64: concatenatedBase64, timestamp });
+    }
+
+    // Keep only the latest 5 images
+    if (images.length > 5) {
+      images = images.slice(-5);
+    }
+
+    deviceImages[deviceId] = images;
+
+    res.json({ errno: 0, images });
   } catch (error) {
     console.error('Error fetching data:', error.response ? error.response.data : error.message);
     res.status(error.response ? error.response.status : 500).send({
@@ -39,4 +79,5 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
 
