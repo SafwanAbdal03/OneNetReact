@@ -41,20 +41,25 @@ app.get('/api/data', async (req, res) => {
     let concatenatedBase64 = '';
     let timestamp = '';
     let images = deviceImages[deviceId] || [];
+    let seenTimestamps = new Set(images.map(img => img.timestamp));
 
     sortedDatastreams.forEach(stream => {
       if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
         concatenatedBase64 += stream.datapoints[0].value;
         timestamp = stream.datapoints[0].at;
       } else if (concatenatedBase64) {
-        images.push({ base64: concatenatedBase64, timestamp });
+        if (!seenTimestamps.has(timestamp)) {
+          images.push({ base64: concatenatedBase64, timestamp });
+          seenTimestamps.add(timestamp);
+        }
         concatenatedBase64 = '';
         timestamp = '';
       }
     });
 
-    if (concatenatedBase64) {
+    if (concatenatedBase64 && !seenTimestamps.has(timestamp)) {
       images.push({ base64: concatenatedBase64, timestamp });
+      seenTimestamps.add(timestamp);
     }
 
     // Keep only the latest 5 images
@@ -79,5 +84,6 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
 
 
