@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let seenTimestamps = new Set();
 
   const fetchData = () => {
-    fetch(https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId})
+    fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
       .then(data => {
         console.log("Data fetched:", data); // Debugging log
@@ -57,11 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
           images.forEach((image, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.classList.add('mySlides', 'fade');
-            slideDiv.innerHTML = 
+            slideDiv.innerHTML = `
               <div class="numbertext">${index + 1} / ${images.length}</div>
               <img src="data:image/jpeg;base64,${image.base64}" style="width:100%; height: 100%; object-fit: cover;">
               <div class="timestamp">${image.timestamp}</div>
-            ;
+            `;
             slideshowContainer.appendChild(slideDiv);
           });
 
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(error => {
         console.error('Error fetching data:', error); // Debugging log
-        errorElement.textContent = Error fetching data: ${error.message};
+        errorElement.textContent = `Error fetching data: ${error.message}`;
       });
   };
 
