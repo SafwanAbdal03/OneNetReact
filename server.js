@@ -31,7 +31,7 @@ app.get('/api/data', async (req, res) => {
     const allowedIds = [
       '3200_0_5750', '3200_1_5750', '3200_2_5750', '3200_3_5750', '3200_4_5750', '3200_5_5750',
       '3200_6_5750', '3200_7_5750', '3200_8_5750', '3200_9_5750', '3200_10_5750', '3200_11_5750',
-      '3200_12_5750', '3200_13_5750', '3200_14_5750'
+      '3200_12_5750', '3200_13_5750', '3200_14_5750', 'Image' // Added 'Image' to allowed IDs
     ];
 
     const sortedDatastreams = allowedIds.map(id =>
@@ -44,7 +44,19 @@ app.get('/api/data', async (req, res) => {
     let seenTimestamps = new Set(images.map(img => img.timestamp));
 
     sortedDatastreams.forEach(stream => {
-      if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
+      if (stream.id === 'Image' && stream.datapoints && stream.datapoints.length > 0) {
+        // If id is 'Image', treat the value as a single base64 string
+        concatenatedBase64 = stream.datapoints[0].value;
+        timestamp = stream.datapoints[0].at;
+
+        if (!seenTimestamps.has(timestamp)) {
+          images.push({ base64: concatenatedBase64, timestamp });
+          seenTimestamps.add(timestamp);
+        }
+        concatenatedBase64 = '';
+        timestamp = '';
+      } else if (stream.datapoints && stream.datapoints.length > 0 && stream.datapoints[0].value !== "'0'") {
+        // Existing logic for other datastreams
         concatenatedBase64 += stream.datapoints[0].value;
         timestamp = stream.datapoints[0].at;
       } else if (concatenatedBase64) {
