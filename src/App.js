@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.errno === 0) {
           const images = data.images;
           updateSlideshow(images);
-          saveImagesToLocal(images);
         } else {
           errorElement.textContent = 'Failed to load data';
         }
@@ -28,17 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error('Error fetching data:', error); // Debugging log
         errorElement.textContent = `Error fetching data: ${error.message}`;
       });
-  };
-
-  const saveImagesToLocal = (images) => {
-    const key = `images_${deviceId}`;
-    localStorage.setItem(key, JSON.stringify(images));
-  };
-
-  const loadImagesFromLocal = () => {
-    const key = `images_${deviceId}`;
-    const storedImages = localStorage.getItem(key);
-    return storedImages ? JSON.parse(storedImages) : [];
   };
 
   const updateSlideshow = (images) => {
@@ -88,12 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     slides[slideIndex - 1].style.display = "block";
   };
-
-  // Load images from local storage on page load
-  const storedImages = loadImagesFromLocal();
-  if (storedImages.length > 0) {
-    updateSlideshow(storedImages);
-  }
 
   fetchData();
   setInterval(fetchData, 20000);
