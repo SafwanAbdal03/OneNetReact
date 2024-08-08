@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+  // Function to fetch data from the server
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
@@ -18,7 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Data fetched:", data); // Debugging log
         if (data.errno === 0) {
           const images = data.images;
-          saveImagesToLocal(images);
+          // Store images in local storage
+          localStorage.setItem(`deviceImages_${deviceId}`, JSON.stringify(images));
           updateSlideshow(images);
         } else {
           errorElement.textContent = 'Failed to load data';
@@ -30,17 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 
-  const saveImagesToLocal = (images) => {
-    const key = `images_${deviceId}`;
-    localStorage.setItem(key, JSON.stringify(images));
-  };
-
-  const loadImagesFromLocal = () => {
-    const key = `images_${deviceId}`;
-    const storedImages = localStorage.getItem(key);
-    return storedImages ? JSON.parse(storedImages) : [];
-  };
-
+  // Function to update the slideshow with images
   const updateSlideshow = (images) => {
     slideshowContainer.innerHTML = '';
 
@@ -72,6 +64,15 @@ document.addEventListener("DOMContentLoaded", function () {
     showSlides(slideIndex);
   };
 
+  // Retrieve images from local storage when the page loads
+  const storedImages = JSON.parse(localStorage.getItem(`deviceImages_${deviceId}`));
+  if (storedImages && storedImages.length > 0) {
+    updateSlideshow(storedImages);
+  } else {
+    // Fetch data if no images are found in local storage
+    fetchData();
+  }
+
   let slideIndex = 1;
 
   const plusSlides = (n) => {
@@ -89,15 +90,10 @@ document.addEventListener("DOMContentLoaded", function () {
     slides[slideIndex - 1].style.display = "block";
   };
 
-  // Load images from local storage on page load
-  const storedImages = loadImagesFromLocal();
-  if (storedImages.length > 0) {
-    updateSlideshow(storedImages);
-  }
-
-  fetchData();
+  // Fetch new data periodically
   setInterval(fetchData, 20000);
 });
+
 
 
 
