@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // Function to fetch data from the server
   const fetchData = () => {
     fetch(`https://one-net-react.vercel.app/api/data?api=${apiKey}&device=${deviceId}`)
       .then(response => response.json())
@@ -19,8 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Data fetched:", data); // Debugging log
         if (data.errno === 0) {
           const images = data.images;
-          // Store images in local storage
-          localStorage.setItem(`deviceImages_${deviceId}`, JSON.stringify(images));
           updateSlideshow(images);
         } else {
           errorElement.textContent = 'Failed to load data';
@@ -32,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 
-  // Function to update the slideshow with images
   const updateSlideshow = (images) => {
     slideshowContainer.innerHTML = '';
 
@@ -64,15 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
     showSlides(slideIndex);
   };
 
-  // Retrieve images from local storage when the page loads
-  const storedImages = JSON.parse(localStorage.getItem(`deviceImages_${deviceId}`));
-  if (storedImages && storedImages.length > 0) {
-    updateSlideshow(storedImages);
-  } else {
-    // Fetch data if no images are found in local storage
-    fetchData();
-  }
-
   let slideIndex = 1;
 
   const plusSlides = (n) => {
@@ -90,12 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
     slides[slideIndex - 1].style.display = "block";
   };
 
-  // Fetch new data periodically
+  fetchData();
   setInterval(fetchData, 20000);
 });
-
-
-
 
 
 
